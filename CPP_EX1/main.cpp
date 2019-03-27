@@ -6,8 +6,13 @@
 //
 
 #include <iostream>
+#include "extractMaze.h"
 
 int main() {
-    std::cout << "too lazy\n";
+    extractor* ex = new extractor(10,1,1);
+    ex->mazeMatrix[0][0] = 1;
+    ex->mazeMatrix[1][1] = 1;
+    std::cout << sizeof(ex->mazeMatrix)<<std::endl;
     return 0;
 }
+
