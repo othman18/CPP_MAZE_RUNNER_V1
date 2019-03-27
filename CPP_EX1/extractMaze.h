@@ -8,25 +8,26 @@
 #include <iostream>
 #ifndef extractMaze_h
 #define extractMaze_h
-class extractor{
+class Extractor{
     const int MAX_STEPS;
     const int NUM_ROWS;
     const int NUM_COLS;
 public:
     int** mazeMatrix;
-    extractor(int steps, int row, int cols):MAX_STEPS(steps),NUM_ROWS(row),NUM_COLS(cols){
+    Extractor(int steps, int row, int cols):MAX_STEPS(steps),NUM_ROWS(row),NUM_COLS(cols){
         mazeMatrix = new int*[NUM_ROWS];
         for(int i=0; i<NUM_ROWS;i++){
             mazeMatrix[i] = new int[NUM_COLS];
         }
         std::cout<<"created maze"<<std::endl;
     }
-    ~extractor(){
+    ~Extractor(){
         std::cout<<"deleting maze"<<std::endl;
         for(int i=0;i<NUM_ROWS;i++){
             delete[] mazeMatrix[i];
         }
         delete [] mazeMatrix;
+//        mazeMatrix = nullptr;                         //should I leave this out?
         std::cout<<"deleted maze"<<std::endl;
     }
 };

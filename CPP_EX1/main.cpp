@@ -9,7 +9,7 @@
 #include "extractMaze.h"
 
 int main() {
-    extractor* ex = new extractor(10,1,2);
+    Extractor* ex = new Extractor(10,1,2);
     ex->mazeMatrix[0][0] = 1;
     ex->mazeMatrix[0][1] = 2;
     delete ex;
