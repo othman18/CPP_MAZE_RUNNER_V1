@@ -9,10 +9,11 @@
 #include "extractMaze.h"
 
 int main() {
-    extractor* ex = new extractor(10,1,1);
+    extractor* ex = new extractor(10,2,2);
     ex->mazeMatrix[0][0] = 1;
     ex->mazeMatrix[1][1] = 1;
-    std::cout << sizeof(ex->mazeMatrix)<<std::endl;
+    delete ex;
+    std::cout <<"done"<<std::endl;
     return 0;
 }
 
