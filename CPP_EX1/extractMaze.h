@@ -12,9 +12,8 @@ class Extractor{
     const int MAX_STEPS=0;
     const int NUM_ROWS=0;
     const int NUM_COLS=0;
-public:
-    /**/
     int** mazeMatrix;
+public:
     Extractor(int steps, int row, int cols):MAX_STEPS(steps),NUM_ROWS(row),NUM_COLS(cols){
         mazeMatrix = new int*[NUM_ROWS];
         for(int i=0; i<NUM_ROWS;i++){
