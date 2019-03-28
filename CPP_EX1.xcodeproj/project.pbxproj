@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6C49C4EB224782BC00BF744D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C49C4EA224782BC00BF744D /* main.cpp */; };
+		6CD37933224A95CB00A21DEE /* extractMaze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CD37931224A95CB00A21DEE /* extractMaze.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		6C49C4E7224782BC00BF744D /* CPP_EX1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CPP_EX1; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C49C4EA224782BC00BF744D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		6CD37931224A95CB00A21DEE /* extractMaze.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = extractMaze.cpp; sourceTree = "<group>"; };
+		6CD37934224A95F900A21DEE /* extractMaze.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = extractMaze.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,8 @@
 			isa = PBXGroup;
 			children = (
 				6C49C4EA224782BC00BF744D /* main.cpp */,
+				6CD37931224A95CB00A21DEE /* extractMaze.cpp */,
+				6CD37934224A95F900A21DEE /* extractMaze.h */,
 			);
 			path = CPP_EX1;
 			sourceTree = "<group>";
@@ -102,6 +107,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 6C49C4DE224782BC00BF744D;
 			productRefGroup = 6C49C4E8224782BC00BF744D /* Products */;
@@ -118,6 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CD37933224A95CB00A21DEE /* extractMaze.cpp in Sources */,
 				6C49C4EB224782BC00BF744D /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
