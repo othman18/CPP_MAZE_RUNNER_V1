@@ -6,30 +6,32 @@
 //  Copyright © 2019 othman wattad. All rights reserved.
 //
 #include <iostream>
+#include <fstream>
+
 #ifndef extractMaze_h
 #define extractMaze_h
 class Extractor{
-    const int MAX_STEPS=0;
-    const int NUM_ROWS=0;
-    const int NUM_COLS=0;
-    int** mazeMatrix;
+    const int* MAX_STEPS;
+    const int* NUM_ROWS;
+    const int* NUM_COLS;
+    int** mazeMatrix=nullptr;
 public:
-    Extractor(int steps, int row, int cols):MAX_STEPS(steps),NUM_ROWS(row),NUM_COLS(cols){
-        mazeMatrix = new int*[NUM_ROWS];
-        for(int i=0; i<NUM_ROWS;i++){
-            mazeMatrix[i] = new int[NUM_COLS];
-        }
-        std::cout<<"created maze"<<std::endl;
-    }
     ~Extractor(){
-        std::cout<<"deleting maze"<<std::endl;
-        for(int i=0;i<NUM_ROWS;i++){
+        if(!mazeMatrix)
+            return;
+        
+        for(int i=0;i<*NUM_ROWS;i++){
             delete[] mazeMatrix[i];
+            mazeMatrix[i] = nullptr;    //should I leave this out?
         }
         delete [] mazeMatrix;
-//        mazeMatrix = nullptr;                         //should I leave this out?
-        std::cout<<"deleted maze"<<std::endl;
+        mazeMatrix = nullptr;   //should I leave this out?
+        std::cout<<"deleted maze-matrix"<<std::endl;
     }
+    void checkForValidInput();
+    void readFile(const std::string& filename);
+    void writeFile(const std::string& filename);
+    void createMaze(int steps, int row, int cols);
 };
 
 #endif /* extractMaze_h */

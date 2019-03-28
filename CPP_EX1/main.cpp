@@ -8,10 +8,22 @@
 #include <iostream>
 #include "extractMaze.h"
 
-int main() {
-    
-    Extractor* ex = new Extractor(10,1,2);
+int main(int argc, char *argv[] ) {
+    if (argc < 3){
+        if (argc == 2){
+            std::cout <<"Missing maze file argument in command line"<<std::endl;
+        } else if (argc == 1){
+            std::cout <<"Missing output file argument in command line" <<std::endl;
+        }
+        return 0;
+    }
+    const std::string inputPath = argv[1], outputPath = argv[2];
+    Extractor* ex = new Extractor();
+//    ex->createMaze(10,10,10);
+//    ex->readFile(inputPath);
     delete ex;
-    std::cout <<"done"<<std::endl;
+    
+    std::cout<<"finished successfuly"<<std::endl;
+    
     return 0;
 }
