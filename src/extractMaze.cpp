@@ -12,6 +12,8 @@ void Extractor::checkForValidInput(){
 
 }
 
+//ignore
+
 void Extractor::createMaze(int steps, int row, int cols){
     MAX_STEPS=&steps;
     NUM_ROWS=&row;
