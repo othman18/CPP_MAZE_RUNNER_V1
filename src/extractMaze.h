@@ -12,7 +12,6 @@
 #include <iostream>
 #include <fstream>
 
-
 class Extractor{
     int NUM_ROWS;  // change to const..
     int NUM_COLS;  // change to const..
