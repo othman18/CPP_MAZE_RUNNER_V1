@@ -5,7 +5,6 @@
 //  Copyright © 2019 othman wattad. All rights reserved.
 //
 
-#include <iostream>
 #include "extractMaze.h"
 
 int main(int argc, char *argv[] ) {
@@ -19,11 +18,15 @@ int main(int argc, char *argv[] ) {
     }
     const std::string inputPath = argv[1], outputPath = argv[2];
     Extractor* ex = new Extractor();
-//    ex->createMaze(10,10,10);
-//    ex->readFile(inputPath);
-    delete ex;
     
-    std::cout<<"finished successfuly"<<std::endl;
+    ex->readFile("/Users/othman/Downloads/recursive_bug_maze.txt");
+    
+    
+    delete ex;
+    if (ex->everyThingOkay)
+        std::cout<<"finished successfuly"<<std::endl;
+    else
+        std::cout<<"something went wrong"<<std::endl;
     
     return 0;
 }

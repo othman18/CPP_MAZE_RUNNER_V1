@@ -6,22 +6,25 @@
 //  Copyright © 2019 othman wattad. All rights reserved.
 //
 
+#ifndef extractMaze_h
+#define extractMaze_h
+
 #include <iostream>
 #include <fstream>
 
-#ifndef extractMaze_h
-#define extractMaze_h
+
 class Extractor{
-    const int* MAX_STEPS;
-    const int* NUM_ROWS;
-    const int* NUM_COLS;
+    int NUM_ROWS;  // change to const..
+    int NUM_COLS;  // change to const..
+    int MAX_STEPS;  // change to const..
     int** mazeMatrix=nullptr;
 public:
+    bool everyThingOkay = true;  // used for debugging
     ~Extractor(){
         if(!mazeMatrix)
             return;
         
-        for(int i=0;i<*NUM_ROWS;i++){
+        for(int i=0;i<NUM_ROWS;i++){
             delete[] mazeMatrix[i];
             mazeMatrix[i] = nullptr;    //should I leave this out?
         }
@@ -32,7 +35,10 @@ public:
     void checkForValidInput();
     void readFile(const std::string& filename);
     void writeFile(const std::string& filename);
-    void createMaze(int steps, int row, int cols);
+    void createMaze();
+    bool checkLine(std::string line, std::string compareWith, int lineNum);
 };
 
+void mazeInputError(const std::string line, int lineNum);
+bool is_number(const std::string& s);
 #endif /* extractMaze_h */
