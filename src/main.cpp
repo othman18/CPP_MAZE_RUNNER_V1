@@ -6,6 +6,7 @@
 
 #include "extractMaze.h"
 
+
 int main(int argc, char *argv[] ) {
     if (argc < 3){
         if (argc == 2){
@@ -20,6 +21,8 @@ int main(int argc, char *argv[] ) {
     Extractor* ex = new Extractor();
     
     ex->readFile("/Users/othman/Downloads/recursive_bug_maze.txt");
+    
+    
     
     ex->printMAze();
     if (ex->everyThingIsOkay)
