@@ -26,13 +26,10 @@
  */
 #include "extractMaze.h"
 
-void Extractor::checkForValidInput(){}
-
-
 
 void Extractor::createMaze(){
     if(!(MAX_STEPS && NUM_COLS && NUM_ROWS)){
-        std::cerr<<"haven't created maze yet"<<std::endl;
+        std::cerr<<"maze construction error"<<std::endl;
         everyThingOkay = false;
         return;
     }
@@ -49,6 +46,7 @@ void Extractor::createMaze(){
 }
 
 void Extractor::readFile(const std::string& fileName){
+    
     //with the given path create the matrix and extract relevant info.
     
     std::string line;
@@ -65,7 +63,6 @@ void Extractor::readFile(const std::string& fileName){
     std::ifstream fin(fileName);
     
     if (fin.is_open()){
-        
         int lineCounter = 1;
         while(lineCounter < 5){
             std::getline(fin, line);
@@ -82,16 +79,16 @@ void Extractor::readFile(const std::string& fileName){
             }
             lineCounter++;
         }
-        
         createMaze();
         //        lineCounter = 0;    // reset lineCounter for the matrix construction
-        int rowCounter = 0, poundCounter=0,atCounter=0,colCounter=0;
+        int rowCounter = 0, dollarCounter=0,atCounter=0,colCounter=0;
         char currentChar;
         while(std::getline(fin, line)){
-            //          std::cout << line << '\n';
-            for(int i = 0; i<line.length();i++){
+            // everyThingOkay will insure that the maz was created before hand
+            for(size_t i = 0; i<line.length();i++){
+                if((int)i >= NUM_COLS)
+                    break;  //ignore unwanted cols
                 currentChar = line[i];
-                
                 if(currentChar == '\r' || currentChar == '\n'){
                     continue;   //ignore
                 }else if(currentChar == 9){
@@ -101,7 +98,7 @@ void Extractor::readFile(const std::string& fileName){
                 }else if(!(currentChar == '#'||currentChar == ' '||
                            currentChar == '@'||currentChar == '$')){
                     //forbiden chars
-                    std::cerr<<"Wrong character in maze: TAB in row "<<lineCounter<<", col "<<i<<std::endl;
+                    std::cerr<<"Wrong character in maze: "<<currentChar<<" in row "<<lineCounter<<", col "<<(i+1)<<std::endl;
                     everyThingOkay=false;
                     return;
                 }else{
@@ -111,11 +108,10 @@ void Extractor::readFile(const std::string& fileName){
                             std::cerr<<"More than one @ in maze"<<std::endl;
                             everyThingOkay=false;
                             return;
-                            
                         }
                     }else if(currentChar == '$'){
-                        poundCounter++;
-                        if(poundCounter > 1){
+                        dollarCounter++;
+                        if(dollarCounter > 1){
                             std::cerr<<"More than one $ in maze"<<std::endl;
                             everyThingOkay=false;
                             return;
@@ -123,18 +119,33 @@ void Extractor::readFile(const std::string& fileName){
                     }
                     // add to mazeMatrix
                     mazeMatrix[colCounter][rowCounter] = currentChar;
-//                    std::cout<<colCounter<<" col"<<std::endl;
+                    //                    std::cout<<colCounter<<" col"<<std::endl;
                     colCounter++;
                 }
             }
-//            std::cout<<rowCounter<<" row"<<std::endl;
+            //            std::cout<<rowCounter<<" row"<<std::endl;
             if(line.length()==0)
                 colCounter++;  //in case the maze has a row that is completly empty
             colCounter = 0;
             rowCounter++;
             lineCounter++;
+            if(rowCounter>=NUM_ROWS)
+                break;  //ignore unwanted rows
         }
         fin.close();
+        bool errorFound = false;
+        if(atCounter == 0){
+            std::cerr<<"Missing @ in maze"<<std::endl;
+            errorFound =true;
+        }
+        if(dollarCounter == 0){
+            std::cerr<<"Missing $ in maze"<<std::endl;
+            errorFound =true;
+        }
+        if(errorFound){
+            everyThingOkay=false;
+            return;
+        }
     }else
         std::cerr <<"Command line argument for maze: "<< fileName <<" doesn't lead to a maze file or leads to a file that cannot be opened"<<std::endl;
 };

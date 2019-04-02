@@ -17,17 +17,16 @@ int main(int argc, char *argv[] ) {
         return 0;
     }
     const std::string inputPath = argv[1], outputPath = argv[2];
+    
     Extractor* ex = new Extractor();
     
-    ex->readFile("/Users/othman/Downloads/recursive_bug_maze.txt");
-
-    
-    
-    delete ex;
+    ex->readFile("/Users/othman/Downloads/complicated_maze.txt");
+    ex->printMAze();
     if (ex->everyThingOkay)
         std::cout<<"finished successfuly"<<std::endl;
     else
         std::cout<<"something went wrong"<<std::endl;
-    
+
+    delete ex;
     return 0;
 }

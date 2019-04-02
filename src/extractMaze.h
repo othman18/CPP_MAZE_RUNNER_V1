@@ -20,22 +20,32 @@ class Extractor{
 public:
     bool everyThingOkay = true;  // used for debugging
     ~Extractor(){
-        if(!mazeMatrix)
+        if(!mazeMatrix){
+            std::cout<<"nothing to delete"<<std::endl;
             return;
-        
-        for(int i=0;i<NUM_ROWS;i++){
+        }
+        for(int i=0;i<NUM_COLS;i++){
             delete[] mazeMatrix[i];
-            mazeMatrix[i] = nullptr;    //should I leave this out?
+            mazeMatrix[i] = nullptr;   //should I leave this out?
         }
         delete [] mazeMatrix;
         mazeMatrix = nullptr;   //should I leave this out?
         std::cout<<"deleted maze-matrix"<<std::endl;
     }
-    void checkForValidInput();
     void readFile(const std::string& filename);
     void writeFile(const std::string& filename);
     void createMaze();
     bool checkLine(std::string line, std::string compareWith, int lineNum);
+    void printMAze(){
+        if(!everyThingOkay)
+            return;
+        for(int j=0; j<NUM_ROWS;j++){
+            for(int i=0; i<NUM_COLS;i++){
+                std::cout<<mazeMatrix[i][j];
+            }
+            std::cout<<std::endl;
+        }
+    }
 };
 
 void mazeInputError(const std::string line, int lineNum);
