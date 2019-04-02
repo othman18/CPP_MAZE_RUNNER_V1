@@ -18,7 +18,7 @@ class Extractor{
     int MAX_STEPS;  // change to const..
     char** mazeMatrix=nullptr;
 public:
-    bool everyThingOkay = true;  // used for debugging
+    bool everyThingIsOkay = true;  // used for debugging
     ~Extractor(){
         if(!mazeMatrix){
             std::cout<<"nothing to delete"<<std::endl;
@@ -36,16 +36,7 @@ public:
     void writeFile(const std::string& filename);
     void createMaze();
     bool checkLine(std::string line, std::string compareWith, int lineNum);
-    void printMAze(){
-        if(!everyThingOkay)
-            return;
-        for(int j=0; j<NUM_ROWS;j++){
-            for(int i=0; i<NUM_COLS;i++){
-                std::cout<<mazeMatrix[i][j];
-            }
-            std::cout<<std::endl;
-        }
-    }
+    void printMAze();
 };
 
 void mazeInputError(const std::string line, int lineNum);

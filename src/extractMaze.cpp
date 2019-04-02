@@ -1,36 +1,23 @@
 //
 //  extractMaze.cpp
 //  CPP_EX1
-//
 //  Created by othman wattad on 26.03.19.
-//  Copyright © 2019 othman wattad. All rights reserved.
 //
-
 
 /*
+ notes 2.4.19
  TODO:
- add bad maze file header writer
- add bad maze in maze writer
- current path
+ get current directory
  spaces in words or in numbers
- 
- continue current maze structure so that it will add the chars to the matrix now
- 
- 
- can catch:
- empty file
- words written with all caps
- lines without any nums
- unvalid nums and or words
- 
+ output:look if exist then creat it
  */
-#include "extractMaze.h"
 
+#include "extractMaze.h"
 
 void Extractor::createMaze(){
     if(!(MAX_STEPS && NUM_COLS && NUM_ROWS)){
         std::cerr<<"maze construction error"<<std::endl;
-        everyThingOkay = false;
+        everyThingIsOkay = false;
         return;
     }
     mazeMatrix = new char*[NUM_COLS];
@@ -46,9 +33,7 @@ void Extractor::createMaze(){
 }
 
 void Extractor::readFile(const std::string& fileName){
-    
     //with the given path create the matrix and extract relevant info.
-    
     std::string line;
     if(fileName[0] == '/'){
         std::cout<<"abs path was given"<<std::endl;
@@ -56,7 +41,7 @@ void Extractor::readFile(const std::string& fileName){
         std::cout<<"current path was given"<<std::endl;
         // change the fileName to include the current path ... can't find the right path atm
         std::cerr<<"haven't implemented this yet"<<std::endl;
-        everyThingOkay = false;
+        everyThingIsOkay = false;
         return;
     }
     
@@ -64,7 +49,7 @@ void Extractor::readFile(const std::string& fileName){
     
     if (fin.is_open()){
         int lineCounter = 1;
-        while(lineCounter < 5){
+        while(lineCounter < 5){    //first 4 lines (before reading the maze)
             std::getline(fin, line);
             switch(lineCounter){
                 case 2:
@@ -79,71 +64,72 @@ void Extractor::readFile(const std::string& fileName){
             }
             lineCounter++;
         }
+        if(!everyThingIsOkay)
+            return;    // can't create a matrix, if the input file is corrupt
+        
         createMaze();
-        //        lineCounter = 0;    // reset lineCounter for the matrix construction
         int rowCounter = 0, dollarCounter=0,atCounter=0,colCounter=0;
         char currentChar;
         while(std::getline(fin, line)){
-            // everyThingOkay will insure that the maz was created before hand
+            //iterate each line and insert it to the matrix (within it's bounds)
             for(size_t i = 0; i<line.length();i++){
                 if((int)i >= NUM_COLS)
-                    break;  //ignore unwanted cols
+                    break;  //ignore chars beyond given cols
                 currentChar = line[i];
-                if(currentChar == '\r' || currentChar == '\n'){
-                    continue;   //ignore
+                if((currentChar == '\r' && i==line.length()-1) || currentChar == '\n'){
+                    continue;   //ignore new_line or \r at the end of the line
                 }else if(currentChar == 9){
                     std::cerr<<"Wrong character in maze: TAB in row "<<lineCounter<<", col "<<i<<std::endl;
-                    everyThingOkay=false;
-                    return;
+                    everyThingIsOkay=false;
+//                    return;
                 }else if(!(currentChar == '#'||currentChar == ' '||
                            currentChar == '@'||currentChar == '$')){
                     //forbiden chars
-                    std::cerr<<"Wrong character in maze: "<<currentChar<<" in row "<<lineCounter<<", col "<<(i+1)<<std::endl;
-                    everyThingOkay=false;
-                    return;
+                    // \r would be catched here (if it's in the middle of the line)
+                    std::cerr<<"Wrong character in maze: "<<currentChar<<" in row "<<lineCounter<<",  col "<<(i+1)<<std::endl;
+                    everyThingIsOkay=false;
+//                    return;
                 }else{
                     if(currentChar == '@'){
                         atCounter++;
                         if(atCounter > 1){
                             std::cerr<<"More than one @ in maze"<<std::endl;
-                            everyThingOkay=false;
-                            return;
+                            everyThingIsOkay=false;
+//                            return;
                         }
                     }else if(currentChar == '$'){
                         dollarCounter++;
                         if(dollarCounter > 1){
                             std::cerr<<"More than one $ in maze"<<std::endl;
-                            everyThingOkay=false;
-                            return;
+                            everyThingIsOkay=false;
+//                            return;
                         }
                     }
                     // add to mazeMatrix
                     mazeMatrix[colCounter][rowCounter] = currentChar;
-                    //                    std::cout<<colCounter<<" col"<<std::endl;
                     colCounter++;
                 }
             }
-            //            std::cout<<rowCounter<<" row"<<std::endl;
-            if(line.length()==0)
-                colCounter++;  //in case the maze has a row that is completly empty
-            colCounter = 0;
+            colCounter = 0;    //new line, start from the start
             rowCounter++;
             lineCounter++;
             if(rowCounter>=NUM_ROWS)
-                break;  //ignore unwanted rows
+                break;  //ignore chars beyond given rows
         }
         fin.close();
+        
         bool errorFound = false;
+        
         if(atCounter == 0){
             std::cerr<<"Missing @ in maze"<<std::endl;
-            errorFound =true;
+            errorFound = true;
         }
         if(dollarCounter == 0){
             std::cerr<<"Missing $ in maze"<<std::endl;
-            errorFound =true;
+            errorFound = true;
         }
         if(errorFound){
-            everyThingOkay=false;
+            everyThingIsOkay=false;
             return;
         }
     }else
@@ -152,20 +138,19 @@ void Extractor::readFile(const std::string& fileName){
 
 bool Extractor::checkLine(const std::string line, std::string compareWith, int lineNum){
     //check line's validity and extract the relevant information
-    
     std::string tmpLine = line;
     int intValue = 0;
     //remove whitespace
     tmpLine.erase(remove_if(tmpLine.begin(), tmpLine.end(), isspace), tmpLine.end());
     
     std::string::size_type delimiter_pos = tmpLine.find('=');
-    std::string name = tmpLine.substr(0,delimiter_pos);    //steps||rows||cols
-    std::string value = tmpLine.substr(delimiter_pos+1);   //int value
+    std::string name = tmpLine.substr(0,delimiter_pos);    //name=steps||rows||cols
+    std::string value = tmpLine.substr(delimiter_pos+1);   //value has to be an int
     
     if(!is_number(value)){
         //check if value is a number
         mazeInputError(line, lineNum);
-        everyThingOkay = false;
+        everyThingIsOkay = false;
         std::cerr<<"error checkLine 1"<<std::endl;
         return false;
     }
@@ -176,7 +161,7 @@ bool Extractor::checkLine(const std::string line, std::string compareWith, int l
     }
     catch (std::invalid_argument const &e){
         mazeInputError(line, lineNum);
-        everyThingOkay = false;
+        everyThingIsOkay = false;
         std::cerr<<"error checkLine 2"<<std::endl;
         return false;
     }
@@ -185,7 +170,7 @@ bool Extractor::checkLine(const std::string line, std::string compareWith, int l
     
     if(name.compare(compareWith)){
         mazeInputError(line, lineNum);
-        everyThingOkay = false;
+        everyThingIsOkay = false;
         std::cerr<<"error checkLine 3"<<std::endl;
         return false;
     }
@@ -222,3 +207,14 @@ bool is_number(const std::string& s){
                                       s.end(), [](char c) { return !std::isdigit(c); }) == s.end();
 }
 
+
+void Extractor::printMAze(){
+    if(!everyThingIsOkay)
+        return;
+    for(int j=0; j<NUM_ROWS;j++){
+        for(int i=0; i<NUM_COLS;i++){
+            std::cout<<mazeMatrix[i][j];
+        }
+        std::cout<<std::endl;
+        }
+}

@@ -2,7 +2,6 @@
 //  main.cpp
 //  CPP_EX1
 //  Created by othman wattad on 24.03.19.
-//  Copyright © 2019 othman wattad. All rights reserved.
 //
 
 #include "extractMaze.h"
@@ -20,13 +19,14 @@ int main(int argc, char *argv[] ) {
     
     Extractor* ex = new Extractor();
     
-    ex->readFile("/Users/othman/Downloads/complicated_maze.txt");
+    ex->readFile("/Users/othman/Downloads/recursive_bug_maze.txt");
+    
     ex->printMAze();
-    if (ex->everyThingOkay)
-        std::cout<<"finished successfuly"<<std::endl;
+    if (ex->everyThingIsOkay)
+        std::cout<<"finished successfuly, player obj can run"<<std::endl;
     else
-        std::cout<<"something went wrong"<<std::endl;
-
+        std::cout<<"something went wrong, don't run the player obj"<<std::endl;
+    
     delete ex;
     return 0;
 }
