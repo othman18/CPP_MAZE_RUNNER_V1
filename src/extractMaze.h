@@ -16,7 +16,7 @@ class Extractor{
     int NUM_ROWS;  // change to const..
     int NUM_COLS;  // change to const..
     int MAX_STEPS;  // change to const..
-    int** mazeMatrix=nullptr;
+    char** mazeMatrix=nullptr;
 public:
     bool everyThingOkay = true;  // used for debugging
     ~Extractor(){

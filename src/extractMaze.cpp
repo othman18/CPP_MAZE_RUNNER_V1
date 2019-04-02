@@ -11,6 +11,11 @@
  TODO:
  add bad maze file header writer
  add bad maze in maze writer
+ current path
+ spaces in words or in numbers
+ 
+ continue current maze structure so that it will add the chars to the matrix now
+ 
  
  can catch:
  empty file
@@ -31,9 +36,14 @@ void Extractor::createMaze(){
         everyThingOkay = false;
         return;
     }
-    mazeMatrix = new int*[NUM_ROWS];
-    for(int i=0; i<NUM_ROWS;i++){
-        mazeMatrix[i] = new int[NUM_COLS];
+    mazeMatrix = new char*[NUM_COLS];
+    int counter = 0;
+    for(int i=0; i<NUM_COLS;i++){
+        mazeMatrix[i] = new char[NUM_ROWS];
+        for(int j=0;j<NUM_ROWS;j++){
+            mazeMatrix[i][j] = ' ';
+            counter++;
+        }
     }
     std::cout<<"created maze-matrix"<<std::endl;
 }
@@ -72,17 +82,58 @@ void Extractor::readFile(const std::string& fileName){
             }
             lineCounter++;
         }
-        std::cout<<lineCounter<<std::endl;
-        createMaze();
-        lineCounter = 0;    // reset lineCounter for the matrix construction
-        int rowCounter = 0, poundCounter=0,atCounter=0;
-        while(std::getline(fin, line)){
-            
-            //          std::cout << line << '\n';
-            
-            
-        }
         
+        createMaze();
+        //        lineCounter = 0;    // reset lineCounter for the matrix construction
+        int rowCounter = 0, poundCounter=0,atCounter=0,colCounter=0;
+        char currentChar;
+        while(std::getline(fin, line)){
+            //          std::cout << line << '\n';
+            for(int i = 0; i<line.length();i++){
+                currentChar = line[i];
+                
+                if(currentChar == '\r' || currentChar == '\n'){
+                    continue;   //ignore
+                }else if(currentChar == 9){
+                    std::cerr<<"Wrong character in maze: TAB in row "<<lineCounter<<", col "<<i<<std::endl;
+                    everyThingOkay=false;
+                    return;
+                }else if(!(currentChar == '#'||currentChar == ' '||
+                           currentChar == '@'||currentChar == '$')){
+                    //forbiden chars
+                    std::cerr<<"Wrong character in maze: TAB in row "<<lineCounter<<", col "<<i<<std::endl;
+                    everyThingOkay=false;
+                    return;
+                }else{
+                    if(currentChar == '@'){
+                        atCounter++;
+                        if(atCounter > 1){
+                            std::cerr<<"More than one @ in maze"<<std::endl;
+                            everyThingOkay=false;
+                            return;
+                            
+                        }
+                    }else if(currentChar == '$'){
+                        poundCounter++;
+                        if(poundCounter > 1){
+                            std::cerr<<"More than one $ in maze"<<std::endl;
+                            everyThingOkay=false;
+                            return;
+                        }
+                    }
+                    // add to mazeMatrix
+                    mazeMatrix[colCounter][rowCounter] = currentChar;
+//                    std::cout<<colCounter<<" col"<<std::endl;
+                    colCounter++;
+                }
+            }
+//            std::cout<<rowCounter<<" row"<<std::endl;
+            if(line.length()==0)
+                colCounter++;  //in case the maze has a row that is completly empty
+            colCounter = 0;
+            rowCounter++;
+            lineCounter++;
+        }
         fin.close();
     }else
         std::cerr <<"Command line argument for maze: "<< fileName <<" doesn't lead to a maze file or leads to a file that cannot be opened"<<std::endl;
