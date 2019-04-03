@@ -41,4 +41,5 @@ public:
 
 void mazeInputError(const std::string line, int lineNum);
 bool is_number(const std::string& s);
+bool checkWordSpaces(std::string line);
 #endif /* extractMaze_h */

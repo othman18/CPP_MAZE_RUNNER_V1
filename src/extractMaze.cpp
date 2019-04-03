@@ -8,8 +8,7 @@
  notes 2.4.19
  TODO:
  get current directory
- spaces in words or in numbers
- output:look if exist then creat it
+ output:look if exist then create it
  */
 
 #include "extractMaze.h"
@@ -81,28 +80,28 @@ void Extractor::readFile(const std::string& fileName){
                 }else if(currentChar == 9){
                     std::cerr<<"Wrong character in maze: TAB in row "<<lineCounter<<", col "<<i<<std::endl;
                     everyThingIsOkay=false;
-//                    return;
+                    //                    return;
                 }else if(!(currentChar == '#'||currentChar == ' '||
                            currentChar == '@'||currentChar == '$')){
                     //forbiden chars
                     // \r would be catched here (if it's in the middle of the line)
                     std::cerr<<"Wrong character in maze: "<<currentChar<<" in row "<<lineCounter<<",  col "<<(i+1)<<std::endl;
                     everyThingIsOkay=false;
-//                    return;
+                    //                    return;
                 }else{
                     if(currentChar == '@'){
                         atCounter++;
                         if(atCounter > 1){
                             std::cerr<<"More than one @ in maze"<<std::endl;
                             everyThingIsOkay=false;
-//                            return;
+                            //                            return;
                         }
                     }else if(currentChar == '$'){
                         dollarCounter++;
                         if(dollarCounter > 1){
                             std::cerr<<"More than one $ in maze"<<std::endl;
                             everyThingIsOkay=false;
-//                            return;
+                            //                            return;
                         }
                     }
                     // add to mazeMatrix
@@ -141,6 +140,15 @@ bool Extractor::checkLine(const std::string line, std::string compareWith, int l
     std::string tmpLine = line;
     int intValue = 0;
     //remove whitespace
+    
+    
+    if(!checkWordSpaces(tmpLine)){  //stop if a word has a space within it
+        mazeInputError(line, lineNum);
+        everyThingIsOkay = false;
+        std::cerr<<"error checkLine 3"<<std::endl;
+        return false;
+    }
+    
     tmpLine.erase(remove_if(tmpLine.begin(), tmpLine.end(), isspace), tmpLine.end());
     
     std::string::size_type delimiter_pos = tmpLine.find('=');
@@ -216,5 +224,24 @@ void Extractor::printMAze(){
             std::cout<<mazeMatrix[i][j];
         }
         std::cout<<std::endl;
+    }
+}
+
+bool checkWordSpaces(std::string line){
+    //check for any paces within words
+    bool updateCounter = false;
+    int counter = 0;  //count the number of occurunces where a new word starts.
+    for(size_t i = 0; i< line.length();i++){
+        if(counter == 3)
+            return false;  // input is allowed to have a max length of 3
+        if(line[i] == ' '){
+            if(updateCounter){
+                counter++;  // started new word
+                updateCounter=false;
+            }
+            continue;
         }
+        updateCounter = true;
+    }
+    return true;
 }

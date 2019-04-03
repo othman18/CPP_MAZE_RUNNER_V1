@@ -7,7 +7,7 @@
 #include "extractMaze.h"
 
 
-int main(int argc, char *argv[] ) {
+int main(int argc, char *argv[]) {
     if (argc < 3){
         if (argc == 2){
             std::cout <<"Missing maze file argument in command line"<<std::endl;
@@ -16,15 +16,15 @@ int main(int argc, char *argv[] ) {
         }
         return 0;
     }
-    const std::string inputPath = argv[1], outputPath = argv[2];
     
+    const std::string inputPath = argv[1], outputPath = argv[2];
     Extractor* ex = new Extractor();
     
     ex->readFile("/Users/othman/Downloads/recursive_bug_maze.txt");
     
     
     
-    ex->printMAze();
+  //  ex->printMAze();
     if (ex->everyThingIsOkay)
         std::cout<<"finished successfuly, player obj can run"<<std::endl;
     else
