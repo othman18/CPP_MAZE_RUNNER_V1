@@ -12,6 +12,9 @@
 #include <iostream>
 #include <fstream>
 #include <sys/stat.h>
+#include <algorithm>
+#include <filesystem>
+
 class Extractor{
     int NUM_ROWS;  // change to const..
     int NUM_COLS;  // change to const..

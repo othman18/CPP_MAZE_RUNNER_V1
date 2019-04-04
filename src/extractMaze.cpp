@@ -5,13 +5,12 @@
 //
 
 /*
- notes 3.4.19
- TODO:
- can't get current directory, other than that, everything is up to date
+ notes 4.4.19
+ current directory uses filesystem, if that doesn't compile then use experimental/filesystem
+ I've added the assignment itself with highlight: blue:=implemented, yellow:=not implemented yet
  */
 
 #include "extractMaze.h"
-
 
 void Extractor::createMaze(){
     if(!(MAX_STEPS && NUM_COLS && NUM_ROWS)){
@@ -33,18 +32,18 @@ void Extractor::createMaze(){
 
 void Extractor::readFile(const std::string& fileName){
     //with the given path create the matrix and extract relevant info.
-    std::string line;
+    std::string line,tmpName;
+    
     if(fileName[0] == '/'){
-        std::cout<<"abs path was given (intput)"<<std::endl;
+        std::cout<<"abs input path was given (intput)"<<std::endl;
+        tmpName = fileName;
     }else{
-        std::cout<<"current path was given"<<std::endl;
-        // change the fileName to include the current path ... can't find the right path atm
-        std::cerr<<"haven't implemented this yet"<<std::endl;
-        everyThingIsOkay = false;
-        return;
+        std::cout<<"current input path was given"<<std::endl;
+        tmpName = (std::string)std::filesystem::current_path()+fileName;
+        std::cout<<tmpName<<std::endl;
     }
     
-    std::ifstream fin(fileName);
+    std::ifstream fin(tmpName);
     
     if (fin.is_open()){
         int lineCounter = 1;
@@ -132,31 +131,34 @@ void Extractor::readFile(const std::string& fileName){
             return;
         }
     }else
-        std::cerr <<"Command line argument for maze: "<< fileName <<" doesn't lead to a maze file or leads to a file that cannot be opened"<<std::endl;
-};
+        std::cerr <<"Command line argument for maze: "<< tmpName <<" doesn't lead to a maze file or leads to a file that cannot be opened"<<std::endl;
+    everyThingIsOkay = false;
+}
 
 void Extractor::writeFile(const std::string& fileName){
+    std::string tmpName;
     
     if(fileName[0] == '/'){
-        std::cout<<"abs path was given (output)"<<std::endl;
+        std::cout<<"abs output path was given (output)"<<std::endl;
+        tmpName = fileName;
     }else{
-        std::cout<<"current path was given"<<std::endl;
-        // change the fileName to include the current path ... can't find the right path atm
-        std::cerr<<"haven't implemented this yet"<<std::endl;
+        std::cout<<"current output path was given"<<std::endl;
+        tmpName = (std::string)std::filesystem::current_path()+'/'+fileName;
+    }
+    
+    if(fileExists(tmpName)){
+        std::cerr<<"Command line argument for output file: "<<tmpName<<" points to a bad path or to a file that already exists"<<std::endl;
         everyThingIsOkay = false;
         return;
     }
     
-    if(fileExists(fileName)){
-        std::cerr<<"Command line argument for output file: "<<fileName<<" points to a bad path or to a file that already exists"<<std::endl;
-        everyThingIsOkay = false;
-        return;
-    }
-    
-    std::ofstream fin(fileName);  //create file
+    std::ofstream fin(tmpName);  //create file
+    std::cout<<"created"<<std::endl;
     
     if(fin.is_open()){}else{
-        std::cerr<<"Command line argument for output file: "<<fileName<<" points to a bad path or to a file that already exists"<<std::endl;
+        std::cerr<<"Command line argument for output file: "<<tmpName<<" points to a bad path or to a file that already exists"<<std::endl;
+        everyThingIsOkay = false;
+
     }
     
     
@@ -177,7 +179,7 @@ bool Extractor::checkLine(const std::string line, std::string compareWith, int l
         return false;
     }
     
-    tmpLine.erase(remove_if(tmpLine.begin(), tmpLine.end(), isspace), tmpLine.end());
+    tmpLine.erase(std::remove_if(tmpLine.begin(), tmpLine.end(), isspace), tmpLine.end());
     
     std::string::size_type delimiter_pos = tmpLine.find('=');
     std::string name = tmpLine.substr(0,delimiter_pos);    //name=steps||rows||cols
