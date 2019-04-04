@@ -1,3 +1,5 @@
 CPP_EX1.xcodeproj
 .DS_Store
 .idea
+cmake-build-debug
+CMakeLists.txt
