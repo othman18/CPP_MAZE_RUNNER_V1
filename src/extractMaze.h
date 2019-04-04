@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include <fstream>
-
+#include <sys/stat.h>
 class Extractor{
     int NUM_ROWS;  // change to const..
     int NUM_COLS;  // change to const..
@@ -32,8 +32,8 @@ public:
         mazeMatrix = nullptr;   //should I leave this out?
         std::cout<<"deleted maze-matrix"<<std::endl;
     }
-    void readFile(const std::string& filename);
-    void writeFile(const std::string& filename);
+    void readFile(const std::string& fileName);
+    void writeFile(const std::string& fileName);
     void createMaze();
     bool checkLine(std::string line, std::string compareWith, int lineNum);
     void printMAze();
@@ -42,4 +42,5 @@ public:
 void mazeInputError(const std::string line, int lineNum);
 bool is_number(const std::string& s);
 bool checkWordSpaces(std::string line);
+bool fileExists(const std::string& name);
 #endif /* extractMaze_h */

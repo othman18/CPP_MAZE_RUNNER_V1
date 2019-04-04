@@ -5,13 +5,13 @@
 //
 
 /*
- notes 2.4.19
+ notes 3.4.19
  TODO:
- get current directory
- output:look if exist then create it
+ can't get current directory, other than that, everything is up to date
  */
 
 #include "extractMaze.h"
+
 
 void Extractor::createMaze(){
     if(!(MAX_STEPS && NUM_COLS && NUM_ROWS)){
@@ -35,7 +35,7 @@ void Extractor::readFile(const std::string& fileName){
     //with the given path create the matrix and extract relevant info.
     std::string line;
     if(fileName[0] == '/'){
-        std::cout<<"abs path was given"<<std::endl;
+        std::cout<<"abs path was given (intput)"<<std::endl;
     }else{
         std::cout<<"current path was given"<<std::endl;
         // change the fileName to include the current path ... can't find the right path atm
@@ -135,6 +135,34 @@ void Extractor::readFile(const std::string& fileName){
         std::cerr <<"Command line argument for maze: "<< fileName <<" doesn't lead to a maze file or leads to a file that cannot be opened"<<std::endl;
 };
 
+void Extractor::writeFile(const std::string& fileName){
+    
+    if(fileName[0] == '/'){
+        std::cout<<"abs path was given (output)"<<std::endl;
+    }else{
+        std::cout<<"current path was given"<<std::endl;
+        // change the fileName to include the current path ... can't find the right path atm
+        std::cerr<<"haven't implemented this yet"<<std::endl;
+        everyThingIsOkay = false;
+        return;
+    }
+    
+    if(fileExists(fileName)){
+        std::cerr<<"Command line argument for output file: "<<fileName<<" points to a bad path or to a file that already exists"<<std::endl;
+        everyThingIsOkay = false;
+        return;
+    }
+    
+    std::ofstream fin(fileName);  //create file
+    
+    if(fin.is_open()){}else{
+        std::cerr<<"Command line argument for output file: "<<fileName<<" points to a bad path or to a file that already exists"<<std::endl;
+    }
+    
+    
+    //  std::ofstream fin(fileExists);
+}
+
 bool Extractor::checkLine(const std::string line, std::string compareWith, int lineNum){
     //check line's validity and extract the relevant information
     std::string tmpLine = line;
@@ -193,6 +221,17 @@ bool Extractor::checkLine(const std::string line, std::string compareWith, int l
     return true;
 }
 
+void Extractor::printMAze(){
+    if(!everyThingIsOkay)
+        return;
+    for(int j=0; j<NUM_ROWS;j++){
+        for(int i=0; i<NUM_COLS;i++){
+            std::cout<<mazeMatrix[i][j];
+        }
+        std::cout<<std::endl;
+    }
+}
+
 void mazeInputError(const std::string line, int lineNum){
     std::string errorName;
     switch (lineNum) {
@@ -215,18 +254,6 @@ bool is_number(const std::string& s){
                                       s.end(), [](char c) { return !std::isdigit(c); }) == s.end();
 }
 
-
-void Extractor::printMAze(){
-    if(!everyThingIsOkay)
-        return;
-    for(int j=0; j<NUM_ROWS;j++){
-        for(int i=0; i<NUM_COLS;i++){
-            std::cout<<mazeMatrix[i][j];
-        }
-        std::cout<<std::endl;
-    }
-}
-
 bool checkWordSpaces(std::string line){
     //check for any paces within words
     bool updateCounter = false;
@@ -244,4 +271,9 @@ bool checkWordSpaces(std::string line){
         updateCounter = true;
     }
     return true;
+}
+
+bool fileExists(const std::string& name) {
+    struct stat buffer;
+    return (stat (name.c_str(), &buffer) == 0);
 }
