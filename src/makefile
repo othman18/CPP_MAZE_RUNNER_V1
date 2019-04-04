@@ -9,10 +9,11 @@ CPP_LINK_FLAG = -lstdc++fs
 #The executabel filename DON'T CHANGE
 EXEC = ex1
 CPP_COMP_FLAG = -std=c++17 -Wall -Wextra \
--Werror -pedantic-errors -DNDEBUG
+-Werror -pedantic-errors -DNDEBUG #-lstdc++fs
+
 
 $(EXEC): $(OBJS)
-	$(COMP) $(OBJS) -o $@ $(CPP_LINK_FLAG)
+	$(COMP) $(OBJS) -o $@ #$(CPP_LINK_FLAG)
 #a rule for building a simple c++ source file
 #use g++ -MM main.cpp to see dependencies
 
