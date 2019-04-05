@@ -1,9 +1,0 @@
-Recursive Maze
-MaxSteps = 100000
-Rows = 5
-Cols = 3
-###
-
-###
-@ 
-$
