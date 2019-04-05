@@ -19,10 +19,10 @@ int main(int argc, char *argv[]) {
     const std::string inputPath = argv[1], outputPath = argv[2];
     Extractor* ex = new Extractor();
 
-    ex->readFile("/Users/othman/Downloads/recursive_bug_maze.txt");
-    ex->writeFile("/Users/othman/Downloadss/output.txt");
+    ex->readFile(inputPath);
+    ex->writeFile(outputPath);
 
-
+    
   //  ex->printMAze();
     if (ex->everyThingIsOkay)
         std::cout<<"finished successfuly, player obj can run"<<std::endl;
