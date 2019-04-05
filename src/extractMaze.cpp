@@ -8,6 +8,8 @@
  notes 4.4.19
  current directory uses filesystem, if that doesn't compile then use experimental/filesystem
  I've added the assignment itself with highlight: blue:=implemented, yellow:=not implemented yet
+ 
+ *!*! remove the error messages that were used for debugging
  */
 
 #include "extractMaze.h"
@@ -35,12 +37,11 @@ void Extractor::readFile(const std::string& fileName){
     std::string line,tmpName;
     
     if(fileName[0] == '/'){
-        std::cout<<"abs input path was given (intput)"<<std::endl;
+        std::cout<<"abs input path was given"<<std::endl;
         tmpName = fileName;
     }else{
         std::cout<<"current input path was given"<<std::endl;
-        tmpName = (std::string)std::filesystem::current_path()+fileName;
-        std::cout<<tmpName<<std::endl;
+        tmpName = (std::string)std::filesystem::current_path()+'/'+fileName;
     }
     
     std::ifstream fin(tmpName);
@@ -117,7 +118,6 @@ void Extractor::readFile(const std::string& fileName){
         fin.close();
         
         bool errorFound = false;
-        
         if(atCounter == 0){
             std::cerr<<"Missing @ in maze"<<std::endl;
             errorFound = true;
@@ -130,9 +130,10 @@ void Extractor::readFile(const std::string& fileName){
             everyThingIsOkay=false;
             return;
         }
-    }else
+    }else{
         std::cerr <<"Command line argument for maze: "<< tmpName <<" doesn't lead to a maze file or leads to a file that cannot be opened"<<std::endl;
-    everyThingIsOkay = false;
+        everyThingIsOkay = false;
+    }
 }
 
 void Extractor::writeFile(const std::string& fileName){
@@ -153,12 +154,11 @@ void Extractor::writeFile(const std::string& fileName){
     }
     
     std::ofstream fin(tmpName);  //create file
-    std::cout<<"created"<<std::endl;
+    std::cout<<"created output file"<<std::endl;
     
     if(fin.is_open()){}else{
         std::cerr<<"Command line argument for output file: "<<tmpName<<" points to a bad path or to a file that already exists"<<std::endl;
         everyThingIsOkay = false;
-
     }
     
     
@@ -175,7 +175,7 @@ bool Extractor::checkLine(const std::string line, std::string compareWith, int l
     if(!checkWordSpaces(tmpLine)){  //stop if a word has a space within it
         mazeInputError(line, lineNum);
         everyThingIsOkay = false;
-        std::cerr<<"error checkLine 3"<<std::endl;
+//        std::cerr<<"error checkLine 3"<<std::endl;
         return false;
     }
     
@@ -189,7 +189,7 @@ bool Extractor::checkLine(const std::string line, std::string compareWith, int l
         //check if value is a number
         mazeInputError(line, lineNum);
         everyThingIsOkay = false;
-        std::cerr<<"error checkLine 1"<<std::endl;
+//        std::cerr<<"error checkLine 1"<<std::endl;
         return false;
     }
     
@@ -200,7 +200,7 @@ bool Extractor::checkLine(const std::string line, std::string compareWith, int l
     catch (std::invalid_argument const &e){
         mazeInputError(line, lineNum);
         everyThingIsOkay = false;
-        std::cerr<<"error checkLine 2"<<std::endl;
+//        std::cerr<<"error checkLine 2"<<std::endl;
         return false;
     }
     
@@ -209,7 +209,7 @@ bool Extractor::checkLine(const std::string line, std::string compareWith, int l
     if(name.compare(compareWith)){
         mazeInputError(line, lineNum);
         everyThingIsOkay = false;
-        std::cerr<<"error checkLine 3"<<std::endl;
+//        std::cerr<<"error checkLine 3"<<std::endl;
         return false;
     }
     //everything checks out
