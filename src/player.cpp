@@ -33,8 +33,19 @@ Player::Direction Player::move() {
         total_steps++;
         return SET_BM;
     }
-
-    handleLastMove();
+    if(is_wall) {
+        if(x == find_x && y == find_y) {
+            is_wall = false;
+            direction = tmp_direction;
+        }
+        else {
+            direction = path.top();
+            path.pop();
+            nextPosition(x, y, direction);
+            total_steps++;
+            return direction;
+        }
+    }
     handleMove();
     return direction;
 }
