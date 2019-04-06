@@ -35,8 +35,8 @@ Player::Direction Player::move() {
     }
     if(is_wall) {
         if(x == find_x && y == find_y) {
-            is_wall = false;
             direction = tmp_direction;
+            is_wall = false;
         }
         else {
             direction = path.top();
