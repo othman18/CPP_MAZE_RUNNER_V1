@@ -7,6 +7,8 @@
 
 #include <array>
 #include <map>
+#include <stack>
+#include <set>
 #include <vector>
 
 typedef std::array<int, 2> Pair;
@@ -25,7 +27,8 @@ public:
     void hitWall();
     void hitBookmark();
 private:
-    Direction direction;
+    Direction direction, tmp_direction;
+    std::stack<Direction> path;
     void handleLastMove();
     void handleMove();
     void setBookmark();

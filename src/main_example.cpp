@@ -1,9 +1,13 @@
 #include <iostream>
+#include <map>
+#include <array>
 #include "player.h"
-
+//typedef std::array<int, 2> Pair;
 
 int main() {
-    Player player(2000);
+    std::map<Pair, Pair*> aa;
+    Pair* bb = aa[{1, 2}];
+    /*Player player(2000);
     int bx = 0;
     int by = 0;
     int x =0;
@@ -40,6 +44,7 @@ int main() {
         if(x == bx && y == by && move != Player::SET_BM) {
             player.hitBookmark();
         }
-    }
+    }*/
+    std::cout << (bb == nullptr) << std::endl;
     return 0;
 }

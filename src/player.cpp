@@ -24,6 +24,7 @@ Player::Player(int max_steps): max_steps(max_steps){
     knows_x = false;
     knows_y = false;
     direction = UP;
+    tmp_direction = UP;
 }
 
 
@@ -40,17 +41,21 @@ Player::Direction Player::move() {
 
 
 void Player::hitWall() {
-    if(is_wall) {
+    if(tmp_steps == 4 * circle_num) {
         return;
     }
     maze[{x, y}] = WALL;
-    int tmp_x = x;
-    int tmp_y = y;
-    Direction dir = direction;
-    if (tmp_steps == 4 * circle_num) {
-        dir = (Direction) ((dir + 1) % 4);
+    if(!is_wall) {
+        tmp_direction = direction;
     }
-    nextPosition(tmp_x, tmp_y, dir);
+    if (tmp_steps % circle_num == 0) {
+        tmp_direction = (Direction) ((tmp_direction + 1) % 4);
+    }
+    find_x = x;
+    find_y = y;
+    nextPosition(find_x, find_y, tmp_direction);
+    prevPosition(x, y, direction);
+    findPath();
     is_wall = true;
 }
 
@@ -98,4 +103,43 @@ void Player::setBookmark() {
 
 
 void Player::findPath() {
+    Pair src = {x, y};
+    Pair dst = {find_x, find_x};
+    Pair current = src;
+    std::vector<Pair> all_neighbors;
+    std::set<Pair> neighbors = {src};
+    std::set<Pair> next_neighbors;
+    std::map<Pair, Pair*> tree;
+    while(true) {
+        for(Pair item: neighbors) {
+            Pair nearby[4] = {{item[0] + 1, item[1]}, {item[0] - 1, item[1]}, {item[0], item[1] + 1}, {item[0], item[1] - 1}};
+            for(Pair neighbor: nearby) {
+                if (neighbor == src || (maze[neighbor] == PASS && tree[neighbor] != nullptr)) {
+                    all_neighbors.push_back(item);
+                    next_neighbors.insert(neighbor);
+                    tree[neighbor] = &(all_neighbors[all_neighbors.size() - 1]);
+                    if (neighbor == dst) {
+                        path.empty();
+                        while(neighbor != src) {
+                            Pair parent = *tree[neighbor];
+                            if(neighbor[0] < parent[0]) {
+                                path.push(RIGHT);
+                            } else if(neighbor[0] > parent[0]) {
+                                path.push(LEFT);
+                            } else if(neighbor[1] < parent[1]) {
+                                path.push(UP);
+                            } else {
+                                path.push(DOWN);
+                            }
+                            neighbor = parent;
+                        }
+                        return;
+                    }
+                }
+            }
+            neighbors.clear();
+            neighbors.merge(next_neighbors);
+            next_neighbors.clear();
+        }
+    }
 }
