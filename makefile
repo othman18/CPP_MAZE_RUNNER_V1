@@ -1,4 +1,4 @@
-COMP = g++-8#5.3.0
+COMP = g++-8.3.0
 #put all your object files here
 OBJS = main.o extractMaze.o player.o playerUtils.o mazeManager.o	#objects should be placed here!
 
