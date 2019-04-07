@@ -7,16 +7,19 @@
 
 #include <array>
 #include <map>
+#include <stack>
+#include <set>
 #include <vector>
+#include <random>
 
 typedef std::array<int, 2> Pair;
 
 
 class Player {
-    enum Cell{UNKNOWN=0, PASS=1, WALL=2, BM=3};
+    enum Cell{UNKNOWN=0, PASS=1, WALL=2};
     const int max_steps;
-    int x, y, dim_x, dim_y, tmp_steps, total_steps, circle_num, bm_x, bm_y, find_x, find_y;
-    bool is_wall, is_bookmark, knows_x, knows_y;
+    int x, y, bm_x, bm_y, tmp_steps, total_steps, circle_num;
+    bool is_wall, is_bookmark;
     std::map<Pair, Cell> maze;
 public:
     explicit Player(int max_steps);
@@ -25,11 +28,11 @@ public:
     void hitWall();
     void hitBookmark();
 private:
-    Direction direction;
-    void handleLastMove();
+    Direction direction, tmp_direction;
+    std::stack<Direction> path;
     void handleMove();
     void setBookmark();
-    void findPath();
+    void chooseDirection();
 };
 
 

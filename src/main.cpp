@@ -6,7 +6,13 @@
 
 #include "extractMaze.h"
 #include "player.h"
+<<<<<<< HEAD:src/main.cpp
 #include "playerUtils.h"
+=======
+#include "mazeManager.h"
+
+
+>>>>>>> 1cd5d882ddef58a6bbe65e08e7863848c48728da:main.cpp
 int main(int argc, char *argv[]) {
     if (argc < 3){
         if (argc == 2){
@@ -16,20 +22,21 @@ int main(int argc, char *argv[]) {
         }
         return 0;
     }
-
     const std::string inputPath = argv[1], outputPath = argv[2];
-    Extractor* ex = new Extractor();
 
-    ex->readFile(inputPath);
-    ex->writeFile(outputPath);
+    Extractor ex;
+    ex.readFile(inputPath);
 
-    
-  //  ex->printMAze();
-    if (ex->everyThingIsOkay)
+    Player player(ex.getMaxSteps());
+    MazeManager manager(&ex, &player);
+    std::cout << manager.manageMaze() << std::endl;
+    return 0;
+    ex.writeFile(outputPath);
+
+    if (ex.everyThingIsOkay)
         std::cout<<"finished successfuly, player obj can run"<<std::endl;
     else
         std::cout<<"something went wrong, don't run the player obj"<<std::endl;
 
-    delete ex;
     return 0;
 }

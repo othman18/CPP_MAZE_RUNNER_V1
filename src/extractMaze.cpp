@@ -90,6 +90,8 @@ void Extractor::readFile(const std::string& fileName){
                     //                    return;
                 }else{
                     if(currentChar == '@'){
+                        start[0] = rowCounter;
+                        start[1] = (int) i;
                         atCounter++;
                         if(atCounter > 1){
                             std::cerr<<"More than one @ in maze"<<std::endl;
@@ -97,6 +99,8 @@ void Extractor::readFile(const std::string& fileName){
                             //                            return;
                         }
                     }else if(currentChar == '$'){
+                        end[0] = rowCounter;
+                        end[1] = (int) i;
                         dollarCounter++;
                         if(dollarCounter > 1){
                             std::cerr<<"More than one $ in maze"<<std::endl;
@@ -223,7 +227,7 @@ bool Extractor::checkLine(const std::string line, std::string compareWith, int l
     return true;
 }
 
-void Extractor::printMAze(){
+void Extractor::printMaze(){
     if(!everyThingIsOkay)
         return;
     for(int j=0; j<NUM_ROWS;j++){
@@ -232,6 +236,34 @@ void Extractor::printMAze(){
         }
         std::cout<<std::endl;
     }
+}
+
+char Extractor::getCell(int i, int j) {
+    return mazeMatrix[i][j];
+}
+
+int Extractor::getMaxSteps() {
+    return MAX_STEPS;
+}
+
+int Extractor::getWidth() {
+    return NUM_COLS;
+}
+
+int Extractor::getHeight() {
+    return NUM_ROWS;
+}
+
+Pair Extractor::getStart() {
+    return start;
+}
+
+Pair Extractor::getEnd() {
+    return end;
+}
+
+char **Extractor::getMazeMatrix() {
+    return mazeMatrix;
 }
 
 void mazeInputError(const std::string line, int lineNum){

@@ -14,15 +14,26 @@
 #include <sys/stat.h>
 #include <algorithm>
 #include <filesystem>
+<<<<<<< HEAD:src/extractMaze.h
 /*
  manager gets extracto ,creates the player (in constructor)
  
  */
+=======
+#include <array>
+
+
+typedef std::array<int, 2> Pair;
+
+
+>>>>>>> 1cd5d882ddef58a6bbe65e08e7863848c48728da:extractMaze.h
 class Extractor{
     int NUM_ROWS;  // change to const..
     int NUM_COLS;  // change to const..
     int MAX_STEPS;  // change to const..
     char** mazeMatrix=nullptr;
+    Pair start;
+    Pair end;
 public:
     bool everyThingIsOkay = true;  // used for debugging
     ~Extractor(){
@@ -42,11 +53,20 @@ public:
     void writeFile(const std::string& fileName);
     void createMaze();
     bool checkLine(std::string line, std::string compareWith, int lineNum);
-    void printMAze();
+    void printMaze();
+    char getCell(int i, int j);
+    int getMaxSteps();
+    int getWidth();
+    int getHeight();
+    Pair getStart();
+    Pair getEnd();
+    char** getMazeMatrix();
 };
 
 void mazeInputError(const std::string line, int lineNum);
 bool is_number(const std::string& s);
 bool checkWordSpaces(std::string line);
 bool fileExists(const std::string& name);
+
+
 #endif /* extractMaze_h */
