@@ -10,14 +10,15 @@
 #include <stack>
 #include <set>
 #include <vector>
+#include <random>
 
 typedef std::array<int, 2> Pair;
 
 
 class Player {
-    enum Cell{UNKNOWN=0, PASS=1, WALL=2, BM=3};
+    enum Cell{UNKNOWN=0, PASS=1, WALL=2};
     const int max_steps;
-    int x, y, width, height, tmp_steps, total_steps, circle_num, bm_x, bm_y, find_x, find_y;
+    int x, y, bm_x, bm_y, tmp_steps, total_steps, circle_num;
     bool is_wall, is_bookmark;
     std::map<Pair, Cell> maze;
 public:
@@ -29,10 +30,9 @@ public:
 private:
     Direction direction, tmp_direction;
     std::stack<Direction> path;
-    void handleLastMove();
     void handleMove();
     void setBookmark();
-    void findPath();
+    void chooseDirection();
 };
 
 
