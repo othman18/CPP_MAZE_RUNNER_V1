@@ -25,7 +25,6 @@ void Extractor::createMaze(){
 }
 
 void Extractor::readFile(const std::string& fileName){
-    bool headerError = false;
     //with the given path create the matrix and extract relevant info.
     std::string line,tmpName;
     
@@ -60,7 +59,7 @@ void Extractor::readFile(const std::string& fileName){
             return;    // can't create a matrix, if the input file is corrupt
         
         createMaze();
-        int rowCounter = 0, dollarCounter=0,atCounter=0,colCounter=0;
+        int rowCounter = 1, dollarCounter=0,atCounter=0,colCounter=0;
         char currentChar;
         while(std::getline(fin, line)){
             //iterate each line and insert it to the matrix (within it's bounds)
@@ -71,16 +70,22 @@ void Extractor::readFile(const std::string& fileName){
                 if((currentChar == '\r' && i==line.length()-1) || currentChar == '\n'){
                     continue;   //ignore new_line or \r at the end of the line
                 }else if(currentChar == 9){
-
-                    std::cerr<<"Wrong character in maze: TAB in row "<<lineCounter<<", col "<<i<<std::endl;
+                    if(!mazeError){
+                        std::cerr<<"Bad maze in maze file:"<<std::endl;
+                        mazeError = true;
+                    }
+                    std::cerr<<"Wrong character in maze: TAB in row "<<rowCounter<<", col "<<i<<std::endl;
                     everyThingIsOkay=false;
                     //                    return;
                 }else if(!(currentChar == '#'||currentChar == ' '||
                            currentChar == '@'||currentChar == '$')){
                     //forbiden chars
                     // \r would be catched here (if it's in the middle of the line)
-                    
-                    std::cerr<<"Wrong character in maze: "<<currentChar<<" in row "<<lineCounter<<",  col "<<(i+1)<<std::endl;
+                    if(!mazeError){
+                        std::cerr<<"Bad maze in maze file:"<<std::endl;
+                        mazeError = true;
+                    }
+                    std::cerr<<"Wrong character in maze: "<<currentChar<<" in row "<<rowCounter<<",  col "<<(i+1)<<std::endl;
                     everyThingIsOkay=false;
                     //                    return;
                 }else{
@@ -89,6 +94,10 @@ void Extractor::readFile(const std::string& fileName){
                         start[1] = (int) i;
                         atCounter++;
                         if(atCounter > 1){
+                            if(!mazeError){
+                                std::cerr<<"Bad maze in maze file:"<<std::endl;
+                                mazeError = true;
+                            }
                             std::cerr<<"More than one @ in maze"<<std::endl;
                             everyThingIsOkay=false;
                             //                            return;
@@ -98,6 +107,10 @@ void Extractor::readFile(const std::string& fileName){
                         end[1] = (int) i;
                         dollarCounter++;
                         if(dollarCounter > 1){
+                            if(!mazeError){
+                                std::cerr<<"Bad maze in maze file:"<<std::endl;
+                                mazeError = true;
+                            }
                             std::cerr<<"More than one $ in maze"<<std::endl;
                             everyThingIsOkay=false;
                             //                            return;
@@ -118,10 +131,18 @@ void Extractor::readFile(const std::string& fileName){
         
         bool errorFound = false;
         if(atCounter == 0){
+            if(!mazeError){
+                std::cerr<<"Bad maze in maze file:"<<std::endl;
+                mazeError = true;
+            }
             std::cerr<<"Missing @ in maze"<<std::endl;
             errorFound = true;
         }
         if(dollarCounter == 0){
+            if(!mazeError){
+                std::cerr<<"Bad maze in maze file:"<<std::endl;
+                mazeError = true;
+            }
             std::cerr<<"Missing $ in maze"<<std::endl;
             errorFound = true;
         }
@@ -130,6 +151,7 @@ void Extractor::readFile(const std::string& fileName){
             return;
         }
     }else{
+        
         std::cerr <<"Command line argument for maze: "<< tmpName <<" doesn't lead to a maze file or leads to a file that cannot be opened"<<std::endl;
         everyThingIsOkay = false;
     }
@@ -261,7 +283,7 @@ char **Extractor::getMazeMatrix() {
     return mazeMatrix;
 }
 
-void mazeInputError(const std::string line, int lineNum){
+void Extractor::mazeInputError(const std::string line, int lineNum){
     std::string errorName;
     switch (lineNum) {
         case 2:
@@ -273,6 +295,10 @@ void mazeInputError(const std::string line, int lineNum){
         case 4:
             errorName = "Cols";
             break;
+    }
+    if(!headerError){
+        std::cerr<<"Bad maze file header:"<<std::endl;
+        headerError = true;
     }
     std::cerr << "expected in line "<<lineNum<<" - "<< errorName <<" = <num>" << '\n'<<
     "got: "<<line<<std::endl;

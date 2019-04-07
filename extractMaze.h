@@ -22,26 +22,28 @@ typedef std::array<int, 2> Pair;
 
 
 class Extractor{
-    int NUM_ROWS;  // change to const..
-    int NUM_COLS;  // change to const..
-    int MAX_STEPS;  // change to const..
+    int NUM_ROWS;
+    int NUM_COLS;
+    int MAX_STEPS;
     char** mazeMatrix=nullptr;
     Pair start;
     Pair end;
+    bool headerError = false, mazeError = false;
 public:
-    bool everyThingIsOkay = true;  // used for debugging
+    bool everyThingIsOkay = true;
+    
     ~Extractor(){
         if(!mazeMatrix){
-            std::cout<<"nothing to delete"<<std::endl;
+//            std::cout<<"nothing to delete"<<std::endl;
             return;
         }
         for(int i=0;i<NUM_COLS;i++){
             delete[] mazeMatrix[i];
-            mazeMatrix[i] = nullptr;   //should I leave this out?
+            mazeMatrix[i] = nullptr;
         }
         delete [] mazeMatrix;
-        mazeMatrix = nullptr;   //should I leave this out?
-        std::cout<<"deleted maze-matrix"<<std::endl;
+        mazeMatrix = nullptr;  
+//        std::cout<<"deleted maze-matrix"<<std::endl;
     }
     void readFile(const std::string& fileName);
     void writeFile(const std::string& fileName);
@@ -56,9 +58,9 @@ public:
     Pair getStart();
     Pair getEnd();
     char** getMazeMatrix();
+    void mazeInputError(const std::string line, int lineNum);
 };
 
-void mazeInputError(const std::string line, int lineNum);
 bool is_number(const std::string& s);
 bool checkWordSpaces(std::string line);
 bool fileExists(const std::string& name);
