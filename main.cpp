@@ -22,17 +22,44 @@ int main(int argc, char *argv[]) {
 
     Extractor ex;
     ex.readFile(inputPath);
-
-    Player player(ex.getMaxSteps());
-    MazeManager manager(&ex, &player);
-    std::cout << manager.manageMaze() << std::endl;
-    return 0;
     ex.writeFile(outputPath);
 
-    if (ex.everyThingIsOkay)
-        std::cout<<"finished successfuly, player obj can run"<<std::endl;
-    else
-        std::cout<<"something went wrong, don't run the player obj"<<std::endl;
-
+    if (ex.everyThingIsOkay){
+//        std::cout<<"finished successfuly, player obj can run"<<std::endl;
+        Player player(ex.getMaxSteps());
+        MazeManager manager(&ex, &player);
+        bool success = manager.manageMaze();
+        std::ofstream myFile;
+        myFile.open(outputPath);
+        while(!manager.Q.empty()){
+            switch(manager.Q.front()){
+                case 0:
+                    myFile<<"UP\n";
+                    break;
+                case 1:
+                    myFile<<"LEFT\n";
+                    break;
+                case 2:
+                    myFile<<"DOWN\n";
+                    break;
+                case 3:
+                    myFile<<"RIGHT\n";
+                    break;
+                case 4:
+                    myFile<<"BOOKMARK\n";
+                    break;
+            }
+            manager.Q.pop();
+        }
+        if(success){
+            myFile<<"!\n";
+            std::cout<<"Succeeded in "<<manager.steps<<" steps"<<std::endl;
+        }else{
+            myFile<<"X\n";
+        }
+        myFile.close();
+    }
+//    else
+//        std::cout<<"something went wrong, don't run the player obj"<<std::endl;
     return 0;
 }

@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <array>
+#include <queue>
 
 
 typedef std::array<int, 2> Pair;
@@ -44,6 +45,7 @@ public:
     }
     void readFile(const std::string& fileName);
     void writeFile(const std::string& fileName);
+    void writeMoveToFile(const std::string& fileNam);
     void createMaze();
     bool checkLine(std::string line, std::string compareWith, int lineNum);
     void printMaze();

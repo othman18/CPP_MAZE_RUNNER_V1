@@ -4,14 +4,6 @@
 //  Created by othman wattad on 26.03.19.
 //
 
-/*
- notes 4.4.19
- current directory uses filesystem, if that doesn't compile then use experimental/filesystem
- I've added the assignment itself with highlight: blue:=implemented, yellow:=not implemented yet
- 
- *!*! remove the error messages that were used for debugging
- */
-
 #include "extractMaze.h"
 
 void Extractor::createMaze(){
@@ -29,18 +21,19 @@ void Extractor::createMaze(){
             counter++;
         }
     }
-    std::cout<<"created maze-matrix"<<std::endl;
+//    std::cout<<"created maze-matrix"<<std::endl;
 }
 
 void Extractor::readFile(const std::string& fileName){
+    bool headerError = false;
     //with the given path create the matrix and extract relevant info.
     std::string line,tmpName;
     
     if(fileName[0] == '/'){
-        std::cout<<"abs input path was given"<<std::endl;
+//        std::cout<<"abs input path was given"<<std::endl;
         tmpName = fileName;
     }else{
-        std::cout<<"current input path was given"<<std::endl;
+//        std::cout<<"current input path was given"<<std::endl;
         tmpName = (std::string)std::filesystem::current_path()+'/'+fileName;
     }
     
@@ -78,6 +71,7 @@ void Extractor::readFile(const std::string& fileName){
                 if((currentChar == '\r' && i==line.length()-1) || currentChar == '\n'){
                     continue;   //ignore new_line or \r at the end of the line
                 }else if(currentChar == 9){
+
                     std::cerr<<"Wrong character in maze: TAB in row "<<lineCounter<<", col "<<i<<std::endl;
                     everyThingIsOkay=false;
                     //                    return;
@@ -85,6 +79,7 @@ void Extractor::readFile(const std::string& fileName){
                            currentChar == '@'||currentChar == '$')){
                     //forbiden chars
                     // \r would be catched here (if it's in the middle of the line)
+                    
                     std::cerr<<"Wrong character in maze: "<<currentChar<<" in row "<<lineCounter<<",  col "<<(i+1)<<std::endl;
                     everyThingIsOkay=false;
                     //                    return;
@@ -144,10 +139,10 @@ void Extractor::writeFile(const std::string& fileName){
     std::string tmpName;
     
     if(fileName[0] == '/'){
-        std::cout<<"abs output path was given (output)"<<std::endl;
+//        std::cout<<"abs output path was given (output)"<<std::endl;
         tmpName = fileName;
     }else{
-        std::cout<<"current output path was given"<<std::endl;
+//        std::cout<<"current output path was given"<<std::endl;
         tmpName = (std::string)std::filesystem::current_path()+'/'+fileName;
     }
     
@@ -158,16 +153,16 @@ void Extractor::writeFile(const std::string& fileName){
     }
     
     std::ofstream fin(tmpName);  //create file
-    std::cout<<"created output file"<<std::endl;
+//    std::cout<<"created output file"<<std::endl;
     
-    if(fin.is_open()){}else{
+    if(!fin.is_open()){
         std::cerr<<"Command line argument for output file: "<<tmpName<<" points to a bad path or to a file that already exists"<<std::endl;
         everyThingIsOkay = false;
     }
-    
-    
-    //  std::ofstream fin(fileExists);
+    fin.close();
 }
+
+//void Extractor::writeMoveToFile(const std::string& fileName){}
 
 bool Extractor::checkLine(const std::string line, std::string compareWith, int lineNum){
     //check line's validity and extract the relevant information

@@ -16,8 +16,11 @@ class MazeManager {
     char** mazeMatrix;
     Pair start{}, end{};
 public:
+    int steps = 0;
     MazeManager(Extractor* extractor, Player* player);
     bool manageMaze();
+    std::queue<int> Q;
+
 };
 
 
