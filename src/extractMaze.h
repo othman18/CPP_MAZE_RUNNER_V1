@@ -14,7 +14,10 @@
 #include <sys/stat.h>
 #include <algorithm>
 #include <filesystem>
-
+/*
+ manager gets extracto ,creates the player (in constructor)
+ 
+ */
 class Extractor{
     int NUM_ROWS;  // change to const..
     int NUM_COLS;  // change to const..

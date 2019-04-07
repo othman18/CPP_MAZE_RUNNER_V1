@@ -1,10 +1,8 @@
 COMP = g++-8#5.3.0
 #put all your object files here
-OBJS = main.o extractMaze.o 	#objects should be placed here! 
-
+OBJS = main.o extractMaze.o player.o playerUtils.o	#objects should be placed here! 
 
 CPP_LINK_FLAG = -lstdc++fs
-
 
 #The executabel filename DON'T CHANGE
 EXEC = ex1
@@ -18,7 +16,13 @@ $(EXEC): $(OBJS)
 extractMaze.o: extractMaze.cpp
 	$(COMP) $(CPP_COMP_FLAG) -c $*.cpp 
 
-main.o: main.cpp extractMaze.h	#put dependencies here!
+player.o:player.cpp playerUtils.h
+	$(COMP) $(CPP_COMP_FLAG) -c $*.cpp
+
+playerUtils.o: playerUtils.cpp 
+	$(COMP) $(CPP_COMP_FLAG) -c $*.cpp
+
+main.o: main.cpp extractMaze.h player.h playerUtils.h	#put dependencies here!
 	$(COMP) $(CPP_COMP_FLAG) -c $*.cpp
 clean:
 	rm -f $(OBJS) $(EXEC)

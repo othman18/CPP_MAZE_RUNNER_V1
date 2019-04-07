@@ -5,7 +5,7 @@
 #include "playerUtils.h"
 #include "player.h"
 #include <vector>
-
+ 
 
 void setPosition(int& x, int& y, Player::Direction direction, bool backwards=false) {
     int sign = backwards ? -1 : 1;
