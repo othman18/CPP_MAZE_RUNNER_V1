@@ -1,6 +1,6 @@
 COMP = g++-8#5.3.0
 #put all your object files here
-OBJS = main.o extractMaze.o player.o playerUtils.o	#objects should be placed here! 
+OBJS = main.o extractMaze.o player.o playerUtils.o mazeManager.o	#objects should be placed here!
 
 
 CPP_LINK_FLAG = -lstdc++fs
@@ -24,7 +24,10 @@ player.o:player.cpp playerUtils.h
 playerUtils.o: playerUtils.cpp player.h
 	$(COMP) $(CPP_COMP_FLAG) -c $*.cpp
 
-main.o: main.cpp extractMaze.h player.h playerUtils.h	#put dependencies here!
+mazeManager.o: mazeManager.cpp extractMaze.h player.h
+	$(COMP) $(CPP_COMP_FLAG) -c $*.cpp
+
+main.o: main.cpp extractMaze.h player.h playerUtils.h mazeManager.h	#put dependencies here!
 	$(COMP) $(CPP_COMP_FLAG) -c $*.cpp
 clean:
 	rm -f $(OBJS) $(EXEC)

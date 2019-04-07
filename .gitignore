@@ -4,6 +4,6 @@ CPP_EX1.xcodeproj
 cmake-build-debug
 CMakeLists.txt
 tests
-src/ex1
-src/*.o
+ex1
+*.o
 out

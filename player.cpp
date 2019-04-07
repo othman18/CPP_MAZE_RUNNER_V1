@@ -4,6 +4,7 @@
 
 #include "player.h"
 #include "playerUtils.h"
+#include <iostream>
 
 
 
@@ -26,7 +27,7 @@ Player::Player(int max_steps): max_steps(max_steps){
     find_y = 0;
     is_wall = false;
     is_bookmark = false; // Turns on when we hit the bookmark.
-    direction = UP; //
+    direction = UP;
     tmp_direction = UP;
 }
 
@@ -119,7 +120,6 @@ void Player::setBookmark() {
 void Player::findPath() {
     Pair src = {x, y};
     Pair dst = {find_x, find_x};
-    Pair current = src;
     std::vector<Pair> all_neighbors;
     std::set<Pair> neighbors = {src};
     std::set<Pair> next_neighbors;
@@ -130,12 +130,12 @@ void Player::findPath() {
             for(Pair neighbor: nearby) {
                 if (neighbor == src || (maze[neighbor] == PASS && tree[neighbor] != nullptr)) {
                     all_neighbors.push_back(item);
-                    next_neighbors.insert(neighbor);
+                    next_neighbors.insert({neighbor[0], neighbor[1]});
                     tree[neighbor] = &(all_neighbors[all_neighbors.size() - 1]);
                     if (neighbor == dst) {
                         path.empty();
                         while(neighbor != src) {
-                            Pair parent = *tree[neighbor];
+                            Pair parent = *(tree[neighbor]);
                             if(neighbor[0] < parent[0]) {
                                 path.push(RIGHT);
                             } else if(neighbor[0] > parent[0]) {
@@ -152,7 +152,9 @@ void Player::findPath() {
                 }
             }
             neighbors.clear();
-            neighbors.merge(next_neighbors);
+            for(Pair neighbor: next_neighbors) {
+                neighbors.insert({neighbor[0], neighbor[1]});
+            }
             next_neighbors.clear();
         }
     }
