@@ -234,6 +234,10 @@ void Extractor::printMAze(){
     }
 }
 
+char Extractor::getCell(int i, int j) {
+    return mazeMatrix[i][j];
+}
+
 void mazeInputError(const std::string line, int lineNum){
     std::string errorName;
     switch (lineNum) {

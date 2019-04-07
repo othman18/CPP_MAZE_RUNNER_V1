@@ -8,22 +8,25 @@
 
 
 Player::Player(int max_steps): max_steps(max_steps){
-    x = 0;
-    y = 0;
-    dim_x = 0;
-    dim_y = 0;
-    tmp_steps = 0;
-    total_steps = 0;
-    circle_num = 0;
-    bm_x = 0;
-    bm_y = 0;
+    x = 0; // Current x position
+    y = 0; // Current y position
+    width = 0; // Maze width
+    height = 0; // Maze height
+    tmp_steps = 0; // Number of steps done in current circle.
+    total_steps = 0; // Total steps done
+    circle_num = 0; // Number of circles. Increases by 2 each time.
+    bm_x = 0; // x position of bookmark.
+    bm_y = 0; // y position of bookmark.
+    /*
+     * When hitting a wall, we want to reach the next cell in current circle.
+     * find_x and find_y will be the coordinates of the next cell we want to reach when we hit a wall.
+     * is_wall tells us that we shouldn't continue in the circle, but to find the next cell.
+     */
     find_x = 0;
     find_y = 0;
     is_wall = false;
-    is_bookmark = false;
-    knows_x = false;
-    knows_y = false;
-    direction = UP;
+    is_bookmark = false; // Turns on when we hit the bookmark.
+    direction = UP; //
     tmp_direction = UP;
 }
 
@@ -53,7 +56,7 @@ Player::Direction Player::move() {
 
 void Player::hitWall() {
     if(tmp_steps == 4 * circle_num) {
-        return;
+        return; // Unhandled case : wall in the last cell of the circle
     }
     maze[{x, y}] = WALL;
     if(!is_wall) {

@@ -40,6 +40,7 @@ public:
     void createMaze();
     bool checkLine(std::string line, std::string compareWith, int lineNum);
     void printMAze();
+    char getCell(int i, int j);
 };
 
 void mazeInputError(const std::string line, int lineNum);
