@@ -6,6 +6,7 @@
 
 #include "extractMaze.h"
 
+
 void Extractor::createMaze(){
     if(!(MAX_STEPS && NUM_COLS && NUM_ROWS)){
         std::cerr<<"maze construction error"<<std::endl;
