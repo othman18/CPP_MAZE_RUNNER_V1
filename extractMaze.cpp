@@ -60,7 +60,7 @@ void Extractor::readFile(const std::string& fileName){
             return;    // can't create a matrix, if the input file is corrupt
         
         createMaze();
-        int rowCounter = 1, dollarCounter=0,atCounter=0,colCounter=0;
+        int rowCounter = 0, dollarCounter=0,atCounter=0,colCounter=0;
         char currentChar;
         while(std::getline(fin, line)){
             //iterate each line and insert it to the matrix (within it's bounds)
@@ -75,7 +75,7 @@ void Extractor::readFile(const std::string& fileName){
                         std::cerr<<"Bad maze in maze file:"<<std::endl;
                         mazeError = true;
                     }
-                    std::cerr<<"Wrong character in maze: TAB in row "<<rowCounter<<", col "<<i<<std::endl;
+                    std::cerr<<"Wrong character in maze: TAB in row "<<(rowCounter+1)<<", col "<<i<<std::endl;
                     everyThingIsOkay=false;
                     //                    return;
                 }else if(!(currentChar == '#'||currentChar == ' '||
@@ -86,7 +86,7 @@ void Extractor::readFile(const std::string& fileName){
                         std::cerr<<"Bad maze in maze file:"<<std::endl;
                         mazeError = true;
                     }
-                    std::cerr<<"Wrong character in maze: "<<currentChar<<" in row "<<rowCounter<<",  col "<<(i+1)<<std::endl;
+                    std::cerr<<"Wrong character in maze: "<<currentChar<<" in row "<<(rowCounter+1)<<",  col "<<(i+1)<<std::endl;
                     everyThingIsOkay=false;
                     //                    return;
                 }else{
