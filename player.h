@@ -1,39 +1,55 @@
 //
-// Created by noamt on 4/5/19.
+//  Player.hpp
+//  Ex2
+//
+//  Created by othman watad on 11.05.19.
+//  Copyright © 2019 othman wattad. All rights reserved.
 //
 
-#ifndef EX1_PLAYER_H
-#define EX1_PLAYER_H
-
-#include <array>
+#ifndef Player_hpp
+#define Player_hpp
+#include <iostream>
 #include <map>
 #include <stack>
-#include <set>
-#include <vector>
-#include <random>
+#include "queue"
+#include "cell.h"
 
-typedef std::array<int, 2> Pair;
+//enum Move{LEFT=0, DOWN, RIGHT, UP, SET_BM};
+enum Move{LEFT=0, UP, RIGHT, DOWN, SET_BM};
 
-
-class Player {
-    enum Cell{UNKNOWN=0, PASS=1, WALL=2};
-    const int max_steps;
-    int x, y, bm_x, bm_y, tmp_steps, total_steps, circle_num;
-    bool is_wall, is_bookmark;
-    std::map<Pair, Cell> maze;
+class Player{
+    Cell* currentCell=nullptr, *candidateCell=nullptr;
+    std::map<Cell*, int> cellToBookmark;  //int is the bookmark id
+    std::map<int, Cell*> bookmarkToCell;
+    Move prevMove;
+    bool isWall=false, foundCandidate=false;
+    std::stack<Cell*> myStack;
+    
 public:
-    explicit Player(int max_steps);
-    enum Direction{UP=0, LEFT=1, DOWN=2, RIGHT=3, SET_BM=4};
-    Direction move();
+    int steps=-1, bookmarks=1, BFSVersion=0;
+    bool usingStack=false;
+    std::string moveString(Move);
+    Player(){currentCell = new Cell();}
+    Move move();
     void hitWall();
-    void hitBookmark();
-private:
-    Direction direction, tmp_direction;
-    std::stack<Direction> path;
-    void handleMove();
+    void hitBookmark(int);
+
+    Cell& getCurrentCell();
+    void setPlayerPosition(Move, bool reverse=false);
+    void setPosition(Cell*&, Move, bool reverse=false);
+    
     void setBookmark();
-    void chooseDirection();
+    Cell& getCellFromBM(int);
+    int getBMFromCell(Cell*);
+
+    void deletePointer(Move, int);
+    Move changeDirection();
+    
+    void BFS();
+    void makeStack(Cell*);
+    Move whichWay(Cell* );
+
 };
 
 
-#endif //EX1_PLAYER_H
+#endif /* Player_hpp */

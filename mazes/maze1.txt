@@ -1,0 +1,9 @@
+A maze ing !!
+MaxSteps    =   50
+Rows    =   4
+Cols    =   10
+#####     
+# @ #    #
+#   #  $ #
+    ##### 
+

@@ -1,0 +1,24 @@
+Free Fall Maze
+MaxSteps = 10000
+Rows = 10
+Cols = 10
+          #          
+  @                 
+                    
+                     
+           
+      $         
+                    
+                    
+                    
+                  
+############                    
+                    
+                    
+                    
+                    
+           
+                    
+                    
+                    
+                    

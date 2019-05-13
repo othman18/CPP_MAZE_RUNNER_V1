@@ -6,7 +6,7 @@
 
 #include "extractMaze.h"
 
-
+ 
 void Extractor::createMaze(){
     if(!(MAX_STEPS && NUM_COLS && NUM_ROWS)){
         std::cerr<<"maze construction error"<<std::endl;
@@ -14,12 +14,10 @@ void Extractor::createMaze(){
         return;
     }
     mazeMatrix = new char*[NUM_COLS];
-    int counter = 0;
     for(int i=0; i<NUM_COLS;i++){
         mazeMatrix[i] = new char[NUM_ROWS];
         for(int j=0;j<NUM_ROWS;j++){
             mazeMatrix[i][j] = ' ';
-            counter++;
         }
     }
 //    std::cout<<"created maze-matrix"<<std::endl;
@@ -34,7 +32,7 @@ void Extractor::readFile(const std::string& fileName){
         tmpName = fileName;
     }else{
 //        std::cout<<"current input path was given"<<std::endl;
-        tmpName = (std::string)std::filesystem::current_path()+'/'+fileName;
+        //tmpName = (std::string)std::filesystem::current_path()+'/'+fileName;
     }
     
     std::ifstream fin(tmpName);
@@ -91,8 +89,8 @@ void Extractor::readFile(const std::string& fileName){
                     //                    return;
                 }else{
                     if(currentChar == '@'){
-                        start[0] = rowCounter;
-                        start[1] = (int) i;
+                        start[0] = (int) i;
+                        start[1] = rowCounter;
                         atCounter++;
                         if(atCounter > 1){
                             if(!mazeError){
@@ -104,8 +102,8 @@ void Extractor::readFile(const std::string& fileName){
                             //                            return;
                         }
                     }else if(currentChar == '$'){
-                        end[0] = rowCounter;
-                        end[1] = (int) i;
+                        end[0] = (int) i;
+                        end[1] = rowCounter;
                         dollarCounter++;
                         if(dollarCounter > 1){
                             if(!mazeError){
@@ -166,14 +164,14 @@ void Extractor::writeFile(const std::string& fileName){
         tmpName = fileName;
     }else{
 //        std::cout<<"current output path was given"<<std::endl;
-        tmpName = (std::string)std::filesystem::current_path()+'/'+fileName;
+       // tmpName = (std::string)std::filesystem::current_path()+'/'+fileName;
     }
     
-    if(fileExists(tmpName)){
-        std::cerr<<"Command line argument for output file: "<<tmpName<<" points to a bad path or to a file that already exists"<<std::endl;
-        everyThingIsOkay = false;
-        return;
-    }
+//    if(fileExists(tmpName)){
+//        std::cerr<<"Command line argument for output file: "<<tmpName<<" points to a bad path or to a file that already exists"<<std::endl;
+//        everyThingIsOkay = false;
+//        return;
+//    }
     
     std::ofstream fin(tmpName);  //create file
 //    std::cout<<"created output file"<<std::endl;

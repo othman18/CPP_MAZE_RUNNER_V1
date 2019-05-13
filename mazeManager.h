@@ -8,19 +8,20 @@
 #include "extractMaze.h"
 #include "player.h"
 
-
 class MazeManager {
     Extractor* extractor;
     Player* player;
-    int width, height, max_steps;
+    int width, height, actual_x, actual_y;
     char** mazeMatrix;
     Pair start{}, end{};
+    std::map<Pair,int> coordinatesBookmarks;
 public:
-    int steps = 0;
     MazeManager(Extractor* extractor, Player* player);
     bool manageMaze();
-    std::queue<int> Q;
-
+    void setManagerPosition(int& x, int& y, Move direction, bool reverse=false);
+    bool isBookmarkHere();
+    void setBookmark(int);
+    int getBookmark();
 };
 
 
