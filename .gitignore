@@ -6,4 +6,5 @@ CMakeLists.txt
 tests
 ex1
 *.o
+*.so
 *.xcodeproj
