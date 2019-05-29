@@ -1,5 +1,5 @@
 Working maze with only 1 way out!!
-MaxSteps = 100
+MaxSteps = 200
 Rows = 10
 Cols = 10
     @     

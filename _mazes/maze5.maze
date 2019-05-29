@@ -1,5 +1,5 @@
 Working maze with redundant 2 lines!!
-MaxSteps = 70
+MaxSteps = 170
 Rows = 6
 Cols = 10
 ########  
